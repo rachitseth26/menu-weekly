@@ -372,115 +372,51 @@
 
   .close-btn:hover { background: var(--terracotta); color: white; }
 
-  .modal-search {
-    padding: 16px 24px 12px;
-    flex-shrink: 0;
+  .modal-body {
+    padding: 20px 24px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
   }
 
-  .modal-search input {
+  .meal-input {
     width: 100%;
-    padding: 10px 16px;
+    padding: 14px 16px;
     border: 1.5px solid var(--border);
-    border-radius: 10px;
+    border-radius: 12px;
     background: white;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
     color: var(--ink);
     outline: none;
     transition: border-color 0.2s;
   }
 
-  .modal-search input:focus { border-color: var(--terracotta); }
+  .meal-input:focus { border-color: var(--terracotta); }
+  .meal-input::placeholder { color: var(--border); font-style: italic; }
 
-  .filter-row {
-    display: flex;
-    gap: 6px;
-    padding: 0 24px 16px;
-    flex-wrap: wrap;
-    flex-shrink: 0;
-  }
-
-  .filter-chip {
-    padding: 5px 14px;
-    border-radius: 20px;
-    border: 1px solid var(--border);
-    background: white;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 12px;
-    color: var(--muted);
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-
-  .filter-chip.active { background: var(--sage); border-color: var(--sage); color: white; }
-  .filter-chip:hover:not(.active) { border-color: var(--sage); color: var(--sage); }
-
-  .meals-list {
-    overflow-y: auto;
-    padding: 0 24px 24px;
-    flex: 1;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    align-content: start;
-  }
-
-  @media (max-width: 480px) {
-    .meals-list { grid-template-columns: 1fr; }
-  }
-
-  .meal-option {
-    background: white;
-    border: 1.5px solid var(--border);
-    border-radius: 12px;
-    padding: 14px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .meal-option::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    background: var(--terracotta);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.2s;
-  }
-
-  .meal-option:hover {
-    border-color: var(--terracotta);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(90,60,40,0.1);
-  }
-
-  .meal-option:hover::before { transform: scaleX(1); }
-
-  .meal-option-emoji {
-    font-size: 28px;
-    margin-bottom: 8px;
-    display: block;
-  }
-
-  .meal-option-name {
-    font-family: 'Playfair Display', serif;
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--brown);
-    margin-bottom: 4px;
-    line-height: 1.3;
-  }
-
-  .meal-option-desc {
+  .meal-input-hint {
     font-size: 12px;
     color: var(--muted);
     font-weight: 300;
-    line-height: 1.4;
-    margin-bottom: 8px;
   }
+
+  .confirm-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--terracotta);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .confirm-btn:hover { background: var(--brown); transform: translateY(-1px); }
+  .confirm-btn:disabled { background: var(--border); cursor: default; transform: none; }
 
   /* Summary section */
   .summary-bar {
@@ -606,7 +542,7 @@
     <div class="summary-stats">
       <div class="stat"><div class="stat-num" id="totalMeals">0</div><div class="stat-label">Meals Planned</div></div>
       <div class="stat"><div class="stat-num" id="daysComplete">0</div><div class="stat-label">Days Complete</div></div>
-      <div class="stat"><div class="stat-num" id="vegCount">0</div><div class="stat-label">Veggie Meals</div></div>
+      <div class="stat"><div class="stat-num" id="vegCount">0</div><div class="stat-label">Empty Slots</div></div>
     </div>
     <div class="action-btns">
       <button class="btn btn-outline" onclick="clearAll()">Clear All</button>
@@ -625,11 +561,11 @@
       </div>
       <button class="close-btn" onclick="closeModal()">✕</button>
     </div>
-    <div class="modal-search">
-      <input type="text" id="searchInput" placeholder="Search meals..." oninput="filterMeals()">
+    <div class="modal-body">
+      <input class="meal-input" type="text" id="mealInput" placeholder="e.g. Spaghetti Bolognese…" maxlength="80" oninput="onMealInput()" onkeydown="onMealKeydown(event)">
+      <p class="meal-input-hint">Type any meal name and press Add — or hit Enter</p>
+      <button class="confirm-btn" id="confirmBtn" onclick="confirmMeal()" disabled>Add to menu</button>
     </div>
-    <div class="filter-row" id="filterRow"></div>
-    <div class="meals-list" id="mealsList"></div>
   </div>
 </div>
 
@@ -639,66 +575,14 @@
   const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   const MEAL_TYPES = ['Breakfast', 'Lunch', 'Dinner', 'Snack'];
 
-  const MEALS = {
-    Breakfast: [
-      { name: 'Avocado Toast', emoji: '🥑', desc: 'Sourdough with smashed avocado & poached eggs', tags: ['veg', 'healthy'] },
-      { name: 'French Toast', emoji: '🍞', desc: 'Thick brioche with maple syrup & berries', tags: ['indulgent'] },
-      { name: 'Açaí Bowl', emoji: '🫐', desc: 'Blended açaí with granola and fresh fruit', tags: ['veg', 'healthy'] },
-      { name: 'Eggs Benedict', emoji: '🍳', desc: 'Poached eggs on muffin with hollandaise', tags: ['indulgent'] },
-      { name: 'Greek Yogurt Parfait', emoji: '🥣', desc: 'Layered with honey, granola, and berries', tags: ['veg', 'quick', 'healthy'] },
-      { name: 'Smoked Salmon Bagel', emoji: '🥯', desc: 'Cream cheese, capers, and red onion', tags: ['healthy'] },
-      { name: 'Pancakes', emoji: '🥞', desc: 'Fluffy buttermilk stack with fresh berries', tags: ['veg', 'indulgent'] },
-      { name: 'Overnight Oats', emoji: '🌾', desc: 'Chia seeds, almond milk, honey, and fruit', tags: ['veg', 'quick', 'healthy'] },
-      { name: 'Shakshuka', emoji: '🍅', desc: 'Poached eggs in spiced tomato sauce', tags: ['veg', 'healthy'] },
-      { name: 'Granola & Milk', emoji: '🥛', desc: 'Crunchy homemade granola with cold milk', tags: ['veg', 'quick'] },
-    ],
-    Lunch: [
-      { name: 'Caesar Salad', emoji: '🥗', desc: 'Romaine, croutons, parmesan & classic dressing', tags: ['veg', 'healthy'] },
-      { name: 'Club Sandwich', emoji: '🥪', desc: 'Turkey, bacon, lettuce, tomato on toasted bread', tags: ['quick'] },
-      { name: 'Ramen Bowl', emoji: '🍜', desc: 'Rich broth with soft egg, bamboo & nori', tags: ['healthy'] },
-      { name: 'Caprese Wrap', emoji: '🫔', desc: 'Mozzarella, tomato, basil in a flour tortilla', tags: ['veg', 'quick'] },
-      { name: 'Chicken Poke Bowl', emoji: '🍱', desc: 'Teriyaki chicken over rice with pickled veg', tags: ['healthy'] },
-      { name: 'Lentil Soup', emoji: '🥘', desc: 'Warming red lentil soup with cumin & lemon', tags: ['veg', 'healthy'] },
-      { name: 'BLT Sandwich', emoji: '🥓', desc: 'Crispy bacon, lettuce, tomato with aioli', tags: ['quick', 'indulgent'] },
-      { name: 'Niçoise Salad', emoji: '🐟', desc: 'Tuna, olives, hard-boiled eggs & green beans', tags: ['healthy'] },
-      { name: 'Grilled Cheese', emoji: '🧀', desc: 'Golden crust with melty three-cheese filling', tags: ['veg', 'quick', 'indulgent'] },
-      { name: 'Quinoa Bowl', emoji: '🌿', desc: 'Roasted veg, feta, tahini & mixed greens', tags: ['veg', 'healthy'] },
-    ],
-    Dinner: [
-      { name: 'Roast Chicken', emoji: '🍗', desc: 'Herb-roasted with garlic potatoes & greens', tags: ['healthy'] },
-      { name: 'Spaghetti Carbonara', emoji: '🍝', desc: 'Classic Roman pasta with guanciale & pecorino', tags: ['indulgent'] },
-      { name: 'Salmon Teriyaki', emoji: '🐟', desc: 'Glazed salmon fillet with steamed bok choy', tags: ['healthy'] },
-      { name: 'Beef Tacos', emoji: '🌮', desc: 'Seasoned ground beef with all the fixings', tags: ['quick', 'indulgent'] },
-      { name: 'Mushroom Risotto', emoji: '🍚', desc: 'Creamy arborio with mixed wild mushrooms', tags: ['veg', 'indulgent'] },
-      { name: 'Thai Green Curry', emoji: '🍛', desc: 'Fragrant coconut milk curry with jasmine rice', tags: ['healthy'] },
-      { name: 'Lamb Chops', emoji: '🥩', desc: 'Herb-crusted with roasted root vegetables', tags: ['indulgent'] },
-      { name: 'Veggie Stir Fry', emoji: '🥦', desc: 'Seasonal vegetables with tofu & ginger sauce', tags: ['veg', 'quick', 'healthy'] },
-      { name: 'Lobster Bisque', emoji: '🦞', desc: 'Velvety cream soup with cognac & croutons', tags: ['indulgent'] },
-      { name: 'Margherita Pizza', emoji: '🍕', desc: 'Wood-fired with buffalo mozzarella & basil', tags: ['veg', 'indulgent'] },
-    ],
-    Snack: [
-      { name: 'Hummus & Veggies', emoji: '🫛', desc: 'House-made hummus with rainbow crudités', tags: ['veg', 'quick', 'healthy'] },
-      { name: 'Cheese Board', emoji: '🧀', desc: 'Aged cheeses with crackers, grapes & honey', tags: ['veg', 'indulgent'] },
-      { name: 'Apple & Peanut Butter', emoji: '🍎', desc: 'Sliced apple with natural almond butter', tags: ['veg', 'quick', 'healthy'] },
-      { name: 'Trail Mix', emoji: '🥜', desc: 'Nuts, seeds, dark chocolate & dried cranberries', tags: ['veg', 'quick'] },
-      { name: 'Fruit Salad', emoji: '🍓', desc: 'Seasonal fruit with mint & lime dressing', tags: ['veg', 'quick', 'healthy'] },
-      { name: 'Rice Cakes & Avocado', emoji: '🫑', desc: 'Topped with smashed avocado & chili flakes', tags: ['veg', 'quick', 'healthy'] },
-      { name: 'Dark Chocolate', emoji: '🍫', desc: '70% cacao with sea salt & almonds', tags: ['veg', 'quick', 'indulgent'] },
-      { name: 'Smoothie', emoji: '🥤', desc: 'Banana, spinach, almond milk & protein powder', tags: ['veg', 'quick', 'healthy'] },
-    ]
-  };
-
   // State
   const schedule = {};
   let currentSlot = null;
-  let activeFilter = 'All';
   let activeMealType = 'Breakfast';
 
-  // Init
   function init() {
-    const today = new Date().getDay(); // 0 = Sun
+    const today = new Date().getDay();
     const todayIdx = today === 0 ? 6 : today - 1;
-
     const grid = document.getElementById('weekGrid');
     grid.innerHTML = '';
 
@@ -715,38 +599,32 @@
       header.innerHTML = `<div class="day-name">${day}</div><div class="day-date">${date.getDate()}</div>`;
       col.appendChild(header);
 
-      MEAL_TYPES.forEach(type => {
-        if (type !== activeMealType) return;
-        const slot = document.createElement('div');
-        const key = `${day}-${type}`;
-        const meal = schedule[key];
+      const type = activeMealType;
+      const slot = document.createElement('div');
+      const key = `${day}-${type}`;
+      const meal = schedule[key];
 
-        slot.className = 'meal-slot' + (meal ? ' filled' : '');
-        slot.dataset.day = day;
-        slot.dataset.type = type;
+      slot.className = 'meal-slot' + (meal ? ' filled' : '');
 
-        if (meal) {
-          slot.innerHTML = `
-            <button class="remove-btn" onclick="removeMeal('${key}', event)" title="Remove">✕</button>
-            <div class="slot-label">${type}</div>
-            <div class="meal-name">${meal.emoji} ${meal.name}</div>
-            <div class="meal-meta">${meal.tags.map(t => `<span class="meal-tag tag-${t}">${t}</span>`).join('')}</div>
-          `;
-        } else {
-          slot.innerHTML = `
-            <div class="slot-label">${type}</div>
-            <div class="slot-empty-icon">+</div>
-            <div class="slot-empty-text">Add meal</div>
-          `;
-        }
+      if (meal) {
+        slot.innerHTML = `
+          <button class="remove-btn" onclick="removeMeal('${key}', event)" title="Remove">✕</button>
+          <div class="slot-label">${type}</div>
+          <div class="meal-name">${meal.name}</div>
+        `;
+      } else {
+        slot.innerHTML = `
+          <div class="slot-label">${type}</div>
+          <div class="slot-empty-icon">+</div>
+          <div class="slot-empty-text">Add meal</div>
+        `;
+      }
 
-        slot.onclick = (e) => {
-          if (e.target.classList.contains('remove-btn')) return;
-          openModal(day, type);
-        };
-        col.appendChild(slot);
-      });
-
+      slot.onclick = (e) => {
+        if (e.target.classList.contains('remove-btn')) return;
+        openModal(day, type);
+      };
+      col.appendChild(slot);
       grid.appendChild(col);
     });
 
@@ -755,13 +633,14 @@
 
   function openModal(day, type) {
     currentSlot = { day, type };
-    document.getElementById('modalTitle').textContent = `${type} for ${day}`;
-    document.getElementById('modalSubtitle').textContent = `Choose what to eat this ${type.toLowerCase()}`;
-    document.getElementById('searchInput').value = '';
-    activeFilter = 'All';
-    renderFilterChips();
-    renderMealOptions();
+    const existing = schedule[`${day}-${type}`];
+    document.getElementById('modalTitle').textContent = `${type} — ${day}`;
+    document.getElementById('modalSubtitle').textContent = existing ? 'Update or replace this meal' : `What's for ${type.toLowerCase()}?`;
+    const input = document.getElementById('mealInput');
+    input.value = existing ? existing.name : '';
+    document.getElementById('confirmBtn').disabled = !input.value.trim();
     document.getElementById('modalOverlay').classList.add('open');
+    setTimeout(() => input.focus(), 80);
   }
 
   function closeModal() {
@@ -773,60 +652,23 @@
     if (e.target === document.getElementById('modalOverlay')) closeModal();
   }
 
-  function renderFilterChips() {
-    const row = document.getElementById('filterRow');
-    const filters = ['All', '🥬 Veg', '⚡ Quick', '💪 Healthy', '🍰 Indulgent'];
-    row.innerHTML = filters.map(f => {
-      const val = f.includes(' ') ? f.split(' ')[1] : f;
-      return `<button class="filter-chip ${activeFilter === val ? 'active' : ''}" onclick="setFilter('${val}')">${f}</button>`;
-    }).join('');
+  function onMealInput() {
+    const val = document.getElementById('mealInput').value.trim();
+    document.getElementById('confirmBtn').disabled = !val;
   }
 
-  function setFilter(f) {
-    activeFilter = f;
-    renderFilterChips();
-    renderMealOptions();
+  function onMealKeydown(e) {
+    if (e.key === 'Enter') confirmMeal();
   }
 
-  function filterMeals() {
-    renderMealOptions();
-  }
-
-  function renderMealOptions() {
-    const type = currentSlot?.type || 'Breakfast';
-    const search = document.getElementById('searchInput').value.toLowerCase();
-    const list = document.getElementById('mealsList');
-    const tagMap = { 'Veg': 'veg', 'Quick': 'quick', 'Healthy': 'healthy', 'Indulgent': 'indulgent' };
-
-    let meals = MEALS[type].filter(m => {
-      const matchSearch = !search || m.name.toLowerCase().includes(search) || m.desc.toLowerCase().includes(search);
-      const matchFilter = activeFilter === 'All' || m.tags.includes(tagMap[activeFilter]);
-      return matchSearch && matchFilter;
-    });
-
-    if (!meals.length) {
-      list.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--muted);padding:30px;font-size:14px;">No meals found. Try a different search.</div>';
-      return;
-    }
-
-    list.innerHTML = meals.map(m => `
-      <div class="meal-option" onclick="selectMeal('${m.name}')">
-        <span class="meal-option-emoji">${m.emoji}</span>
-        <div class="meal-option-name">${m.name}</div>
-        <div class="meal-option-desc">${m.desc}</div>
-        <div class="meal-meta">${m.tags.map(t => `<span class="meal-tag tag-${t}">${t}</span>`).join('')}</div>
-      </div>
-    `).join('');
-  }
-
-  function selectMeal(name) {
+  function confirmMeal() {
+    const val = document.getElementById('mealInput').value.trim();
+    if (!val || !currentSlot) return;
     const { day, type } = currentSlot;
-    const key = `${day}-${type}`;
-    const meal = MEALS[type].find(m => m.name === name);
-    schedule[key] = meal;
+    schedule[`${day}-${type}`] = { name: val };
     closeModal();
     init();
-    showToast(`${meal.emoji} ${meal.name} added to ${day} ${type.toLowerCase()}`);
+    showToast(`"${val}" added to ${day} ${type.toLowerCase()}`);
   }
 
   function removeMeal(key, e) {
@@ -837,7 +679,7 @@
   }
 
   function clearAll() {
-    if (Object.keys(schedule).length === 0) return;
+    if (!Object.keys(schedule).length) return;
     Object.keys(schedule).forEach(k => delete schedule[k]);
     init();
     showToast('Menu cleared');
@@ -845,12 +687,11 @@
 
   function updateStats() {
     const total = Object.keys(schedule).length;
-    const vegCount = Object.values(schedule).filter(m => m.tags.includes('veg')).length;
-    const daysWithAll = DAYS.filter(d => MEAL_TYPES.some(t => schedule[`${d}-${t}`])).length;
-
+    const daysWithMeal = DAYS.filter(d => MEAL_TYPES.some(t => schedule[`${d}-${t}`])).length;
+    const emptySlots = (DAYS.length * MEAL_TYPES.length) - total;
     document.getElementById('totalMeals').textContent = total;
-    document.getElementById('daysComplete').textContent = daysWithAll;
-    document.getElementById('vegCount').textContent = vegCount;
+    document.getElementById('daysComplete').textContent = daysWithMeal;
+    document.getElementById('vegCount').textContent = emptySlots;
   }
 
   function showToast(msg) {
@@ -860,11 +701,8 @@
     setTimeout(() => t.classList.remove('show'), 2500);
   }
 
-  function printMenu() {
-    window.print();
-  }
+  function printMenu() { window.print(); }
 
-  // Meal type tabs
   document.getElementById('mealTabs').addEventListener('click', e => {
     const btn = e.target.closest('.meal-tab');
     if (!btn) return;
@@ -874,7 +712,6 @@
     init();
   });
 
-  // Keyboard close
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
   init();
