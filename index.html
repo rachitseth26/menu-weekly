@@ -19,7 +19,6 @@ min-height: 100vh;
 
 .container { max-width: 900px; margin: 0 auto; padding: 0 16px 80px; }
 
-/* Header */
 header { text-align: center; padding: 36px 0 20px; }
 
 .header-tag {
@@ -45,23 +44,35 @@ margin-bottom: 8px;
 }
 
 h1 em { font-style: italic; color: #C4623A; }
-
 header p { font-size: 14px; color: #9B8B7A; font-weight: 300; }
 
-/* Divider */
-.divider {
+.divider { display: flex; align-items: center; gap: 12px; margin: 18px 0; }
+.divider::before, .divider::after { content: ‘’; flex: 1; height: 1px; background: #E8DDD0; }
+.divider-star { font-size: 14px; color: #D4A853; }
+
+/* Sync status */
+.sync-bar {
 display: flex;
 align-items: center;
-gap: 12px;
-margin: 18px 0;
+gap: 8px;
+font-size: 12px;
+color: #9B8B7A;
+margin-bottom: 14px;
+padding: 8px 14px;
+background: #FFFFFF;
+border: 1.5px solid #E8DDD0;
+border-radius: 10px;
 }
-.divider::before, .divider::after {
-content: ‘’;
-flex: 1;
-height: 1px;
+
+.sync-dot {
+width: 8px; height: 8px;
+border-radius: 50%;
 background: #E8DDD0;
+flex-shrink: 0;
 }
-.divider-star { font-size: 14px; color: #D4A853; }
+
+.sync-dot.live { background: #25D366; }
+.sync-dot.error { background: #C4623A; }
 
 /* Notify bar */
 .notify-bar {
@@ -95,7 +106,7 @@ outline: none;
 appearance: none;
 }
 
-/* Tabs — using divs not buttons */
+/* Tabs */
 .meal-tabs {
 display: grid;
 grid-template-columns: repeat(4, 1fr);
@@ -116,7 +127,6 @@ cursor: pointer;
 text-align: center;
 user-select: none;
 -webkit-user-select: none;
-transition: none;
 }
 
 /* Week grid */
@@ -127,21 +137,12 @@ gap: 8px;
 margin-bottom: 20px;
 }
 
-@media (max-width: 600px) {
-.week-grid { grid-template-columns: repeat(4, 1fr); }
-}
-@media (max-width: 380px) {
-.week-grid { grid-template-columns: repeat(2, 1fr); }
-}
+@media (max-width: 600px) { .week-grid { grid-template-columns: repeat(4, 1fr); } }
+@media (max-width: 380px) { .week-grid { grid-template-columns: repeat(2, 1fr); } }
 
 .day-col { display: flex; flex-direction: column; gap: 6px; }
 
-/* Day header — background set inline in JS */
-.day-header {
-border-radius: 10px;
-padding: 8px 4px;
-text-align: center;
-}
+.day-header { border-radius: 10px; padding: 8px 4px; text-align: center; }
 
 .day-name {
 font-size: 10px;
@@ -161,7 +162,6 @@ line-height: 1.2;
 display: block;
 }
 
-/* Meal slot */
 .meal-slot {
 background: #FFFFFF;
 border: 1.5px dashed #E8DDD0;
@@ -178,50 +178,22 @@ position: relative;
 -webkit-tap-highlight-color: transparent;
 }
 
-.meal-slot.filled {
-border-style: solid;
-align-items: flex-start;
-text-align: left;
-justify-content: flex-start;
-}
+.meal-slot.filled { border-style: solid; align-items: flex-start; text-align: left; justify-content: flex-start; }
 
-.slot-type {
-font-size: 9px;
-text-transform: uppercase;
-letter-spacing: 0.1em;
-color: #9B8B7A;
-font-weight: 500;
-margin-bottom: 3px;
-display: block;
-}
-
+.slot-type { font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; color: #9B8B7A; font-weight: 500; margin-bottom: 3px; display: block; }
 .slot-plus { font-size: 22px; color: #E8DDD0; line-height: 1; margin-bottom: 2px; display: block; }
 .slot-add-text { font-size: 10px; color: #9B8B7A; display: block; }
-
-.slot-meal-name {
-font-family: ‘Playfair Display’, serif;
-font-size: 12px;
-font-weight: 700;
-color: #5C3D2E;
-line-height: 1.3;
-word-break: break-word;
-display: block;
-}
+.slot-meal-name { font-family: ‘Playfair Display’, serif; font-size: 12px; font-weight: 700; color: #5C3D2E; line-height: 1.3; word-break: break-word; display: block; }
 
 .slot-remove {
-position: absolute;
-top: 4px; right: 4px;
-background: none;
-border: none;
-color: #9B8B7A;
-font-size: 13px;
-cursor: pointer;
-padding: 4px 6px;
-line-height: 1;
+position: absolute; top: 4px; right: 4px;
+background: none; border: none;
+color: #9B8B7A; font-size: 13px;
+cursor: pointer; padding: 4px 6px; line-height: 1;
 -webkit-appearance: none;
 }
 
-/* Stats bar */
+/* Stats */
 .stats-bar {
 background: #FFFFFF;
 border: 1.5px solid #E8DDD0;
@@ -235,67 +207,22 @@ flex-wrap: wrap;
 }
 
 .stats { display: flex; gap: 20px; }
-
-.stat-num {
-font-family: ‘Playfair Display’, serif;
-font-size: 26px;
-font-weight: 700;
-color: #C4623A;
-line-height: 1;
-}
-
-.stat-label {
-font-size: 10px;
-text-transform: uppercase;
-letter-spacing: 0.08em;
-color: #9B8B7A;
-font-weight: 500;
-margin-top: 2px;
-}
-
+.stat-num { font-family: ‘Playfair Display’, serif; font-size: 26px; font-weight: 700; color: #C4623A; line-height: 1; }
+.stat-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: #9B8B7A; font-weight: 500; margin-top: 2px; }
 .action-btns { display: flex; gap: 8px; }
 
-.btn {
-padding: 9px 16px;
-border-radius: 10px;
-font-family: ‘DM Sans’, sans-serif;
-font-size: 13px;
-font-weight: 500;
-cursor: pointer;
--webkit-appearance: none;
-appearance: none;
-}
+.btn { padding: 9px 16px; border-radius: 10px; font-family: ‘DM Sans’, sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; -webkit-appearance: none; appearance: none; }
+.btn-clear { background: transparent; color: #5C3D2E; border: 1.5px solid #E8DDD0; }
+.btn-print { background: #C4623A; color: #FFFFFF; border: none; }
 
-.btn-clear {
-background: transparent;
-color: #5C3D2E;
-border: 1.5px solid #E8DDD0;
-}
-
-.btn-print {
-background: #C4623A;
-color: #FFFFFF;
-border: none;
-}
-
-/* Overlay + modal */
-.overlay {
-display: none;
-position: fixed;
-inset: 0;
-background: rgba(26,20,16,0.5);
-z-index: 100;
-align-items: flex-end;
-justify-content: center;
-}
-
+/* Modal */
+.overlay { display: none; position: fixed; inset: 0; background: rgba(26,20,16,0.5); z-index: 100; align-items: flex-end; justify-content: center; }
 .overlay.open { display: flex; }
 
 .modal {
 background: #F9F4EC;
 border-radius: 24px 24px 0 0;
-width: 100%;
-max-width: 540px;
+width: 100%; max-width: 540px;
 padding: 16px 20px 48px;
 animation: slideUp 0.22s ease;
 }
@@ -305,80 +232,52 @@ from { transform: translateY(100%); opacity: 0; }
 to   { transform: translateY(0);    opacity: 1; }
 }
 
-.modal-handle {
-width: 36px; height: 4px;
-background: #E8DDD0;
-border-radius: 2px;
-margin: 0 auto 18px;
-}
-
-.modal-title {
-font-family: ‘Playfair Display’, serif;
-font-size: 20px;
-font-weight: 700;
-color: #5C3D2E;
-margin-bottom: 4px;
-}
-
+.modal-handle { width: 36px; height: 4px; background: #E8DDD0; border-radius: 2px; margin: 0 auto 18px; }
+.modal-title { font-family: ‘Playfair Display’, serif; font-size: 20px; font-weight: 700; color: #5C3D2E; margin-bottom: 4px; }
 .modal-sub { font-size: 13px; color: #9B8B7A; margin-bottom: 18px; }
 
 .meal-input {
-width: 100%;
-padding: 14px 16px;
-border: 1.5px solid #E8DDD0;
-border-radius: 12px;
-background: #FFFFFF;
-font-family: ‘Playfair Display’, serif;
-font-size: 17px;
-color: #1A1410;
-outline: none;
-margin-bottom: 6px;
--webkit-appearance: none;
-appearance: none;
-display: block;
+width: 100%; padding: 14px 16px;
+border: 1.5px solid #E8DDD0; border-radius: 12px;
+background: #FFFFFF; font-family: ‘Playfair Display’, serif;
+font-size: 17px; color: #1A1410; outline: none;
+margin-bottom: 6px; -webkit-appearance: none; appearance: none; display: block;
 }
 
 .meal-input:focus { border-color: #C4623A; }
 .meal-input::placeholder { color: #CCC; font-style: italic; }
-
 .input-hint { font-size: 12px; color: #9B8B7A; margin-bottom: 14px; }
 
 .add-btn {
-width: 100%;
-padding: 15px;
-background: #C4623A;
-color: #FFFFFF;
-border: none;
-border-radius: 12px;
-font-family: ‘DM Sans’, sans-serif;
-font-size: 15px;
-font-weight: 500;
-cursor: pointer;
--webkit-appearance: none;
-appearance: none;
-display: block;
+width: 100%; padding: 15px;
+background: #C4623A; color: #FFFFFF; border: none;
+border-radius: 12px; font-family: ‘DM Sans’, sans-serif;
+font-size: 15px; font-weight: 500; cursor: pointer;
+-webkit-appearance: none; appearance: none; display: block;
 }
 
 .add-btn:disabled { background: #E8DDD0; color: #9B8B7A; }
 
 /* Toast */
 .toast {
-position: fixed;
-bottom: 24px; left: 50%;
+position: fixed; bottom: 24px; left: 50%;
 transform: translateX(-50%) translateY(60px);
-background: #1A1410;
-color: #FFFFFF;
-padding: 11px 22px;
-border-radius: 30px;
-font-size: 13px;
-font-weight: 500;
-z-index: 200;
-transition: transform 0.25s ease;
-pointer-events: none;
-white-space: nowrap;
+background: #1A1410; color: #FFFFFF;
+padding: 11px 22px; border-radius: 30px;
+font-size: 13px; font-weight: 500;
+z-index: 200; transition: transform 0.25s ease;
+pointer-events: none; white-space: nowrap;
 }
 
 .toast.show { transform: translateX(-50%) translateY(0); }
+
+/* Loading spinner */
+.loading {
+text-align: center;
+padding: 40px 0;
+color: #9B8B7A;
+font-size: 14px;
+}
 </style>
 
 </head>
@@ -393,6 +292,11 @@ white-space: nowrap;
 
   <div class="divider"><span class="divider-star">✦</span></div>
 
+  <div class="sync-bar">
+    <div class="sync-dot" id="syncDot"></div>
+    <span id="syncStatus">Connecting to shared menu…</span>
+  </div>
+
   <div class="notify-bar">
     <div class="notify-label">💬 WhatsApp notification number</div>
     <input class="phone-input" type="tel" id="waPhone" placeholder="+1 234 567 8900">
@@ -405,22 +309,13 @@ white-space: nowrap;
     <div class="meal-tab" data-meal="Snack">🍎 Snack</div>
   </div>
 
-  <div class="week-grid" id="weekGrid"></div>
+  <div class="week-grid" id="weekGrid"><div class="loading">Loading menu…</div></div>
 
   <div class="stats-bar">
     <div class="stats">
-      <div>
-        <div class="stat-num" id="totalMeals">0</div>
-        <div class="stat-label">Planned</div>
-      </div>
-      <div>
-        <div class="stat-num" id="daysCount">0</div>
-        <div class="stat-label">Days</div>
-      </div>
-      <div>
-        <div class="stat-num" id="emptyCount">28</div>
-        <div class="stat-label">Empty</div>
-      </div>
+      <div><div class="stat-num" id="totalMeals">0</div><div class="stat-label">Planned</div></div>
+      <div><div class="stat-num" id="daysCount">0</div><div class="stat-label">Days</div></div>
+      <div><div class="stat-num" id="emptyCount">28</div><div class="stat-label">Empty</div></div>
     </div>
     <div class="action-btns">
       <button class="btn btn-clear" onclick="clearAll()">Clear</button>
@@ -433,7 +328,7 @@ white-space: nowrap;
 <!-- Modal -->
 
 <div class="overlay" id="overlay" onclick="onOverlayClick(event)">
-  <div class="modal" id="modal">
+  <div class="modal">
     <div class="modal-handle"></div>
     <div class="modal-title" id="modalTitle">Breakfast — Mon</div>
     <div class="modal-sub" id="modalSub">What's for breakfast?</div>
@@ -447,42 +342,77 @@ white-space: nowrap;
 
 <div class="toast" id="toast"></div>
 
-<script>
+<!-- Firebase -->
+
+<script type="module">
+  import { initializeApp }                          from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, doc, setDoc, deleteField,
+           onSnapshot, updateDoc }                  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey:            "AIzaSyDqLtzQjl5lvwjYLRj28nPj3hPBL8a4kPU",
+    authDomain:        "family-menu-61134.firebaseapp.com",
+    projectId:         "family-menu-61134",
+    storageBucket:     "family-menu-61134.firebasestorage.app",
+    messagingSenderId: "208812328156",
+    appId:             "1:208812328156:web:0ea3c4cd838496d09b2019"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db  = getFirestore(app);
+  const menuRef = doc(db, "menus", "family");
+
   const DAYS  = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
   const TYPES = ['Breakfast','Lunch','Dinner','Snack'];
   const BROWN      = '#5C3D2E';
   const TERRACOTTA = '#C4623A';
 
-  const schedule = JSON.parse(localStorage.getItem('menuSchedule') || '{}');
+  let schedule    = {};
   let activeType  = 'Breakfast';
   let currentSlot = null;
 
-  // Restore phone
+  // Phone persistence (local only — personal preference)
   const ph = document.getElementById('waPhone');
   ph.value = localStorage.getItem('menuPhone') || '';
   ph.addEventListener('input', () => localStorage.setItem('menuPhone', ph.value));
 
-  // Set first tab active on load
+  // Tabs
   setActiveTab('Breakfast');
-
-  // Tabs — divs with click
   document.getElementById('mealTabs').addEventListener('click', e => {
     const tab = e.target.closest('.meal-tab');
     if (!tab) return;
-    setActiveTab(tab.dataset.meal);
     activeType = tab.dataset.meal;
+    setActiveTab(activeType);
     renderGrid();
   });
 
   function setActiveTab(meal) {
     document.querySelectorAll('.meal-tab').forEach(t => {
-      const isActive = t.dataset.meal === meal;
-      t.style.background    = isActive ? BROWN : '#FFFFFF';
-      t.style.borderColor   = isActive ? BROWN : '#E8DDD0';
-      t.style.color         = isActive ? '#FFFFFF' : '#9B8B7A';
+      const on = t.dataset.meal === meal;
+      t.style.background  = on ? BROWN    : '#FFFFFF';
+      t.style.borderColor = on ? BROWN    : '#E8DDD0';
+      t.style.color       = on ? '#FFFFFF' : '#9B8B7A';
     });
   }
 
+  // ── Real-time listener ──────────────────────────────────────
+  onSnapshot(menuRef, snap => {
+    schedule = snap.exists() ? (snap.data() || {}) : {};
+    renderGrid();
+    setSyncStatus(true);
+  }, err => {
+    console.error(err);
+    setSyncStatus(false);
+  });
+
+  function setSyncStatus(ok) {
+    document.getElementById('syncDot').className   = 'sync-dot ' + (ok ? 'live' : 'error');
+    document.getElementById('syncStatus').textContent = ok
+      ? 'Live — shared with family'
+      : 'Connection error — check internet';
+  }
+
+  // ── Grid ────────────────────────────────────────────────────
   function renderGrid() {
     const today    = new Date().getDay();
     const todayIdx = today === 0 ? 6 : today - 1;
@@ -496,24 +426,26 @@ white-space: nowrap;
       const d = new Date();
       d.setDate(d.getDate() + (i - todayIdx));
 
-      // Day header — background set inline
       const hdr = document.createElement('div');
       hdr.className = 'day-header';
       hdr.style.background = (i === todayIdx) ? TERRACOTTA : BROWN;
       hdr.innerHTML = `<span class="day-name">${day}</span><span class="day-date">${d.getDate()}</span>`;
       col.appendChild(hdr);
 
-      // Meal slot
-      const key  = `${day}-${activeType}`;
+      const key  = `${day}_${activeType}`;
       const meal = schedule[key];
       const slot = document.createElement('div');
       slot.className = 'meal-slot' + (meal ? ' filled' : '');
 
       if (meal) {
         slot.innerHTML = `
-          <button class="slot-remove" onclick="removeMeal(event,'${key}')">✕</button>
+          <button class="slot-remove" data-key="${key}">✕</button>
           <span class="slot-type">${activeType}</span>
-          <span class="slot-meal-name">${meal.name}</span>`;
+          <span class="slot-meal-name">${meal}</span>`;
+        slot.querySelector('.slot-remove').addEventListener('click', e => {
+          e.stopPropagation();
+          removeMeal(key);
+        });
       } else {
         slot.innerHTML = `
           <span class="slot-type">${activeType}</span>
@@ -521,11 +453,7 @@ white-space: nowrap;
           <span class="slot-add-text">Add</span>`;
       }
 
-      slot.addEventListener('click', e => {
-        if (e.target.classList.contains('slot-remove')) return;
-        openModal(day, activeType);
-      });
-
+      slot.addEventListener('click', () => openModal(day, activeType));
       col.appendChild(slot);
       grid.appendChild(col);
     });
@@ -533,70 +461,86 @@ white-space: nowrap;
     updateStats();
   }
 
+  // ── Modal ───────────────────────────────────────────────────
   function openModal(day, type) {
     currentSlot = { day, type };
-    const existing = schedule[`${day}-${type}`];
+    const key = `${day}_${type}`;
+    const existing = schedule[key];
     document.getElementById('modalTitle').textContent = `${type} — ${day}`;
     document.getElementById('modalSub').textContent   = existing ? 'Edit or replace this meal' : `What's for ${type.toLowerCase()}?`;
     const inp = document.getElementById('mealInput');
-    inp.value = existing ? existing.name : '';
+    inp.value = existing || '';
     document.getElementById('addBtn').disabled = !inp.value.trim();
     document.getElementById('overlay').classList.add('open');
     setTimeout(() => inp.focus(), 120);
   }
 
-  function closeModal() {
+  window.closeModal = function() {
     document.getElementById('overlay').classList.remove('open');
     currentSlot = null;
-  }
+  };
 
-  function onOverlayClick(e) {
+  window.onOverlayClick = function(e) {
     if (e.target === document.getElementById('overlay')) closeModal();
-  }
+  };
 
-  function onInput() {
+  window.onInput = function() {
     document.getElementById('addBtn').disabled = !document.getElementById('mealInput').value.trim();
-  }
+  };
 
-  function addMeal() {
+  // ── Add meal → write to Firestore ───────────────────────────
+  window.addMeal = async function() {
     const val = document.getElementById('mealInput').value.trim();
     if (!val || !currentSlot) return;
+
     const { day, type } = currentSlot;
-    schedule[`${day}-${type}`] = { name: val };
-    localStorage.setItem('menuSchedule', JSON.stringify(schedule));
+    const key = `${day}_${type}`;
 
-    // Auto WhatsApp
-    const phone = ph.value.trim().replace(/[\s\-\(\)]/g, '');
-    if (phone) {
-      const appUrl = window.location.href;
-      const msg = encodeURIComponent(`🍽️ Meal update!\n\n*${type}* on *${day}*:\n👉 ${val}\n\n📅 View the full menu:\n${appUrl}`);
-      window.open(`https://wa.me/${phone}?text=${msg}`, '_blank');
+    try {
+      await setDoc(menuRef, { [key]: val }, { merge: true });
+
+      // WhatsApp notification
+      const phone = ph.value.trim().replace(/[\s\-\(\)]/g, '');
+      if (phone) {
+        const appUrl = window.location.href;
+        const msg = encodeURIComponent(`🍽️ Meal update!\n\n*${type}* on *${day}*:\n👉 ${val}\n\n📅 View & edit the menu:\n${appUrl}`);
+        window.open(`https://wa.me/${phone}?text=${msg}`, '_blank');
+      }
+
+      closeModal();
+      showToast(`Added: ${val}`);
+    } catch(err) {
+      showToast('Error saving — check connection');
+      console.error(err);
     }
+  };
 
-    closeModal();
-    renderGrid();
-    showToast(`Added: ${val}`);
+  // ── Remove meal ─────────────────────────────────────────────
+  async function removeMeal(key) {
+    try {
+      await updateDoc(menuRef, { [key]: deleteField() });
+      showToast('Meal removed');
+    } catch(err) {
+      console.error(err);
+    }
   }
 
-  function removeMeal(e, key) {
-    e.stopPropagation();
-    delete schedule[key];
-    localStorage.setItem('menuSchedule', JSON.stringify(schedule));
-    renderGrid();
-    showToast('Meal removed');
-  }
-
-  function clearAll() {
+  // ── Clear all ───────────────────────────────────────────────
+  window.clearAll = async function() {
     if (!Object.keys(schedule).length) return;
-    Object.keys(schedule).forEach(k => delete schedule[k]);
-    localStorage.setItem('menuSchedule', JSON.stringify(schedule));
-    renderGrid();
-    showToast('Menu cleared');
-  }
+    const blank = {};
+    Object.keys(schedule).forEach(k => blank[k] = deleteField());
+    try {
+      await updateDoc(menuRef, blank);
+      showToast('Menu cleared');
+    } catch(err) {
+      console.error(err);
+    }
+  };
 
   function updateStats() {
     const total = Object.keys(schedule).length;
-    const days  = DAYS.filter(d => TYPES.some(t => schedule[`${d}-${t}`])).length;
+    const days  = DAYS.filter(d => TYPES.some(t => schedule[`${d}_${t}`])).length;
     document.getElementById('totalMeals').textContent = total;
     document.getElementById('daysCount').textContent  = days;
     document.getElementById('emptyCount').textContent = (DAYS.length * TYPES.length) - total;
@@ -610,8 +554,6 @@ white-space: nowrap;
   }
 
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-
-  renderGrid();
 </script>
 
 </body>
