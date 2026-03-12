@@ -3,135 +3,147 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Weekly Menu Planner</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
     --cream: #F9F4EC;
-    --warm-white: #FDFAF5;
     --ink: #1A1410;
     --brown: #5C3D2E;
     --terracotta: #C4623A;
-    --sage: #7A9E7E;
     --gold: #D4A853;
     --muted: #9B8B7A;
-    --card-bg: #FFFFFF;
+    --white: #FFFFFF;
     --border: #E8DDD0;
+    --wa: #25D366;
   }
 
-- { margin: 0; padding: 0; box-sizing: border-box; }
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-body {
-background-color: var(–cream);
+html, body {
+background: var(–cream);
 font-family: ‘DM Sans’, sans-serif;
 color: var(–ink);
 min-height: 100vh;
-}
-
-/* Background texture */
-body::before {
-content: ‘’;
-position: fixed;
-inset: 0;
-background-image: url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘300’ height=‘300’%3E%3Cfilter id=‘noise’%3E%3CfeTurbulence type=‘fractalNoise’ baseFrequency=‘0.9’ numOctaves=‘4’ stitchTiles=‘stitch’/%3E%3CfeColorMatrix type=‘saturate’ values=‘0’/%3E%3C/filter%3E%3Crect width=‘300’ height=‘300’ filter=‘url(%23noise)’ opacity=‘0.03’/%3E%3C/svg%3E”);
-pointer-events: none;
-z-index: 0;
+-webkit-text-size-adjust: 100%;
 }
 
 .container {
-max-width: 1200px;
+max-width: 900px;
 margin: 0 auto;
-padding: 0 24px 60px;
-position: relative;
-z-index: 1;
+padding: 0 16px 80px;
 }
 
 /* Header */
 header {
 text-align: center;
-padding: 52px 0 40px;
-position: relative;
+padding: 40px 0 24px;
 }
 
 .header-tag {
 display: inline-block;
 font-size: 11px;
-letter-spacing: 0.2em;
+letter-spacing: 0.18em;
 text-transform: uppercase;
 color: var(–terracotta);
 font-weight: 500;
-margin-bottom: 16px;
 border: 1px solid var(–terracotta);
 padding: 4px 14px;
 border-radius: 20px;
+margin-bottom: 14px;
 }
 
-header h1 {
+h1 {
 font-family: ‘Playfair Display’, serif;
-font-size: clamp(2.4rem, 5vw, 3.6rem);
+font-size: clamp(1.9rem, 7vw, 3rem);
 font-weight: 700;
 color: var(–brown);
-line-height: 1.15;
-margin-bottom: 12px;
+line-height: 1.2;
+margin-bottom: 10px;
 }
 
-header h1 em {
-font-style: italic;
-color: var(–terracotta);
-}
+h1 em { font-style: italic; color: var(–terracotta); }
 
 header p {
-font-size: 15px;
+font-size: 14px;
 color: var(–muted);
 font-weight: 300;
-max-width: 400px;
-margin: 0 auto;
 }
 
+/* Divider */
 .divider {
 display: flex;
 align-items: center;
-gap: 16px;
-margin: 32px auto;
-max-width: 300px;
+gap: 12px;
+margin: 20px 0;
 }
-
 .divider::before, .divider::after {
 content: ‘’;
 flex: 1;
 height: 1px;
 background: var(–border);
 }
-
-.divider-icon {
-font-size: 18px;
+.divider span {
+font-size: 14px;
 color: var(–gold);
+line-height: 1;
 }
 
-/* Meal categories tabs */
+/* Notify bar */
+.notify-bar {
+background: var(–white);
+border: 1.5px solid var(–border);
+border-radius: 14px;
+padding: 14px 16px;
+margin-bottom: 20px;
+}
+
+.notify-label {
+font-size: 11px;
+font-weight: 500;
+color: var(–muted);
+text-transform: uppercase;
+letter-spacing: 0.1em;
+margin-bottom: 8px;
+}
+
+.phone-input {
+width: 100%;
+padding: 10px 14px;
+border: 1.5px solid var(–border);
+border-radius: 10px;
+font-family: ‘DM Sans’, sans-serif;
+font-size: 15px;
+color: var(–ink);
+background: var(–cream);
+outline: none;
+-webkit-appearance: none;
+}
+
+.phone-input:focus { border-color: var(–wa); }
+
+/* Tabs */
 .meal-tabs {
-display: flex;
-justify-content: center;
+display: grid;
+grid-template-columns: repeat(4, 1fr);
 gap: 8px;
-margin-bottom: 36px;
-flex-wrap: wrap;
+margin-bottom: 20px;
 }
 
 .meal-tab {
-padding: 8px 20px;
-border-radius: 24px;
+padding: 10px 4px;
+border-radius: 12px;
 border: 1.5px solid var(–border);
-background: transparent;
+background: var(–white);
 font-family: ‘DM Sans’, sans-serif;
-font-size: 13px;
+font-size: 12px;
 font-weight: 500;
 color: var(–muted);
 cursor: pointer;
-transition: all 0.2s ease;
+text-align: center;
+-webkit-appearance: none;
 }
-
-.meal-tab:hover { border-color: var(–brown); color: var(–brown); }
 
 .meal-tab.active {
 background: var(–brown);
@@ -143,48 +155,31 @@ color: white;
 .week-grid {
 display: grid;
 grid-template-columns: repeat(7, 1fr);
-gap: 12px;
-margin-bottom: 40px;
+gap: 8px;
+margin-bottom: 24px;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 600px) {
 .week-grid { grid-template-columns: repeat(4, 1fr); }
 }
-@media (max-width: 560px) {
+@media (max-width: 380px) {
 .week-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
-.day-column {
-display: flex;
-flex-direction: column;
-gap: 8px;
-}
+.day-col { display: flex; flex-direction: column; gap: 6px; }
 
 .day-header {
-text-align: center;
-padding: 10px 4px;
 background: var(–brown);
 border-radius: 10px;
-position: relative;
-overflow: hidden;
+padding: 8px 4px;
+text-align: center;
 }
 
-.day-header.today {
-background: var(–terracotta);
-}
-
-.day-header.today::after {
-content: ‘◉’;
-position: absolute;
-top: 4px;
-right: 6px;
-font-size: 8px;
-color: rgba(255,255,255,0.6);
-}
+.day-header.today { background: var(–terracotta); }
 
 .day-name {
-font-size: 11px;
-letter-spacing: 0.1em;
+font-size: 10px;
+letter-spacing: 0.08em;
 text-transform: uppercase;
 color: rgba(255,255,255,0.7);
 font-weight: 500;
@@ -192,192 +187,171 @@ font-weight: 500;
 
 .day-date {
 font-family: ‘Playfair Display’, serif;
-font-size: 20px;
+font-size: 18px;
 color: white;
 font-weight: 700;
 line-height: 1.2;
 }
 
-/* Meal slot */
 .meal-slot {
-background: var(–card-bg);
+background: var(–white);
 border: 1.5px dashed var(–border);
 border-radius: 10px;
-min-height: 90px;
-padding: 10px;
+min-height: 80px;
+padding: 8px;
 cursor: pointer;
-transition: all 0.2s ease;
-position: relative;
 display: flex;
 flex-direction: column;
 align-items: center;
 justify-content: center;
 text-align: center;
-}
-
-.meal-slot:hover {
-border-color: var(–terracotta);
-border-style: solid;
-transform: translateY(-2px);
-box-shadow: 0 6px 20px rgba(90,60,40,0.08);
+position: relative;
+-webkit-tap-highlight-color: transparent;
 }
 
 .meal-slot.filled {
 border-style: solid;
-border-color: var(–border);
 align-items: flex-start;
 text-align: left;
 justify-content: flex-start;
 }
 
-.meal-slot.filled:hover {
-border-color: var(–terracotta);
-}
-
-.slot-label {
-font-size: 10px;
+.slot-type {
+font-size: 9px;
 text-transform: uppercase;
-letter-spacing: 0.12em;
+letter-spacing: 0.1em;
 color: var(–muted);
 font-weight: 500;
-margin-bottom: 4px;
+margin-bottom: 3px;
 }
 
-.slot-empty-icon {
-font-size: 20px;
-margin-bottom: 4px;
-opacity: 0.3;
+.slot-plus {
+font-size: 22px;
+color: var(–border);
+line-height: 1;
+margin-bottom: 2px;
 }
 
-.slot-empty-text {
-font-size: 11px;
-color: var(–muted);
-font-weight: 300;
-}
+.slot-add-text { font-size: 10px; color: var(–muted); }
 
-.meal-name {
+.slot-meal-name {
 font-family: ‘Playfair Display’, serif;
-font-size: 13px;
+font-size: 12px;
 font-weight: 700;
 color: var(–brown);
 line-height: 1.3;
-margin-bottom: 4px;
+word-break: break-word;
 }
 
-.meal-meta {
-display: flex;
-gap: 6px;
-flex-wrap: wrap;
-margin-top: 4px;
-}
-
-.meal-tag {
-font-size: 10px;
-padding: 2px 7px;
-border-radius: 10px;
-font-weight: 500;
-}
-
-.tag-veg { background: #E8F5E9; color: #388E3C; }
-.tag-quick { background: #FFF3E0; color: #E65100; }
-.tag-healthy { background: #E3F2FD; color: #1565C0; }
-.tag-indulgent { background: #FCE4EC; color: #AD1457; }
-
-.remove-btn {
+.slot-remove {
 position: absolute;
-top: 6px;
-right: 6px;
+top: 4px;
+right: 4px;
 background: none;
 border: none;
 color: var(–muted);
+font-size: 12px;
 cursor: pointer;
-font-size: 14px;
+padding: 2px 4px;
 line-height: 1;
-padding: 2px;
-border-radius: 4px;
-transition: color 0.15s;
-opacity: 0;
+-webkit-appearance: none;
 }
 
-.meal-slot:hover .remove-btn { opacity: 1; }
-.remove-btn:hover { color: var(–terracotta); }
-
-/* Meal picker modal */
-.modal-overlay {
-display: none;
-position: fixed;
-inset: 0;
-background: rgba(26, 20, 16, 0.5);
-backdrop-filter: blur(4px);
-z-index: 100;
-align-items: center;
-justify-content: center;
-padding: 20px;
-}
-
-.modal-overlay.open { display: flex; }
-
-.modal {
-background: var(–warm-white);
-border-radius: 20px;
-width: 100%;
-max-width: 620px;
-max-height: 85vh;
-overflow: hidden;
-display: flex;
-flex-direction: column;
-box-shadow: 0 30px 80px rgba(26,20,16,0.25);
-animation: modalIn 0.25s ease;
-}
-
-@keyframes modalIn {
-from { opacity: 0; transform: scale(0.95) translateY(10px); }
-to { opacity: 1; transform: scale(1) translateY(0); }
-}
-
-.modal-header {
-padding: 24px 24px 0;
+/* Stats */
+.stats-bar {
+background: var(–white);
+border: 1.5px solid var(–border);
+border-radius: 14px;
+padding: 16px;
 display: flex;
 justify-content: space-between;
-align-items: flex-start;
-flex-shrink: 0;
+align-items: center;
+gap: 12px;
+flex-wrap: wrap;
 }
 
-.modal-header h2 {
+.stats { display: flex; gap: 20px; }
+
+.stat-num {
 font-family: ‘Playfair Display’, serif;
-font-size: 22px;
-color: var(–brown);
+font-size: 26px;
+font-weight: 700;
+color: var(–terracotta);
+line-height: 1;
 }
 
-.modal-header p {
-font-size: 13px;
+.stat-label {
+font-size: 10px;
+text-transform: uppercase;
+letter-spacing: 0.08em;
 color: var(–muted);
+font-weight: 500;
 margin-top: 2px;
 }
 
-.close-btn {
-background: var(–border);
-border: none;
-width: 32px;
-height: 32px;
-border-radius: 50%;
+.action-btns { display: flex; gap: 8px; }
+
+.btn {
+padding: 9px 16px;
+border-radius: 10px;
+font-family: ‘DM Sans’, sans-serif;
+font-size: 13px;
+font-weight: 500;
 cursor: pointer;
-font-size: 16px;
-color: var(–brown);
-display: flex;
-align-items: center;
-justify-content: center;
-transition: background 0.15s;
-flex-shrink: 0;
+border: none;
+-webkit-appearance: none;
 }
 
-.close-btn:hover { background: var(–terracotta); color: white; }
+.btn-outline { background: transparent; color: var(–brown); border: 1.5px solid var(–border); }
+.btn-primary { background: var(–terracotta); color: white; }
 
-.modal-body {
-padding: 20px 24px 24px;
-display: flex;
-flex-direction: column;
-gap: 14px;
+/* Modal — slides up from bottom on mobile */
+.overlay {
+display: none;
+position: fixed;
+inset: 0;
+background: rgba(26,20,16,0.5);
+z-index: 100;
+align-items: flex-end;
+justify-content: center;
+}
+
+.overlay.open { display: flex; }
+
+.modal {
+background: var(–cream);
+border-radius: 24px 24px 0 0;
+width: 100%;
+max-width: 540px;
+padding: 16px 20px 44px;
+animation: slideUp 0.22s ease;
+}
+
+@keyframes slideUp {
+from { transform: translateY(100%); opacity: 0; }
+to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-handle {
+width: 36px;
+height: 4px;
+background: var(–border);
+border-radius: 2px;
+margin: 0 auto 18px;
+}
+
+.modal-title {
+font-family: ‘Playfair Display’, serif;
+font-size: 20px;
+font-weight: 700;
+color: var(–brown);
+margin-bottom: 4px;
+}
+
+.modal-subtitle {
+font-size: 13px;
+color: var(–muted);
+margin-bottom: 18px;
 }
 
 .meal-input {
@@ -385,24 +359,22 @@ width: 100%;
 padding: 14px 16px;
 border: 1.5px solid var(–border);
 border-radius: 12px;
-background: white;
+background: var(–white);
 font-family: ‘Playfair Display’, serif;
-font-size: 18px;
+font-size: 17px;
 color: var(–ink);
 outline: none;
-transition: border-color 0.2s;
+margin-bottom: 6px;
+-webkit-appearance: none;
+display: block;
 }
 
 .meal-input:focus { border-color: var(–terracotta); }
-.meal-input::placeholder { color: var(–border); font-style: italic; }
+.meal-input::placeholder { color: #CCC; font-style: italic; }
 
-.meal-input-hint {
-font-size: 12px;
-color: var(–muted);
-font-weight: 300;
-}
+.input-hint { font-size: 12px; color: var(–muted); margin-bottom: 14px; }
 
-.confirm-btn {
+.add-btn {
 width: 100%;
 padding: 14px;
 background: var(–terracotta);
@@ -413,141 +385,29 @@ font-family: ‘DM Sans’, sans-serif;
 font-size: 15px;
 font-weight: 500;
 cursor: pointer;
-transition: all 0.2s;
+margin-bottom: 12px;
+-webkit-appearance: none;
+display: block;
 }
 
-.confirm-btn:hover { background: var(–brown); transform: translateY(-1px); }
-.confirm-btn:disabled { background: var(–border); cursor: default; transform: none; }
+.add-btn:disabled { background: var(–border); }
 
-/* Summary section */
-.summary-bar {
-background: white;
-border: 1.5px solid var(–border);
-border-radius: 16px;
-padding: 20px 24px;
+.sep {
 display: flex;
-justify-content: space-between;
 align-items: center;
-flex-wrap: gap;
-gap: 16px;
-}
-
-.summary-stats {
-display: flex;
-gap: 28px;
-flex-wrap: wrap;
-}
-
-.stat {
-text-align: center;
-}
-
-.stat-num {
-font-family: ‘Playfair Display’, serif;
-font-size: 28px;
-font-weight: 700;
-color: var(–terracotta);
-line-height: 1;
-}
-
-.stat-label {
-font-size: 11px;
-text-transform: uppercase;
-letter-spacing: 0.1em;
-color: var(–muted);
-font-weight: 500;
-margin-top: 2px;
-}
-
-.action-btns {
-display: flex;
 gap: 10px;
-}
-
-.btn {
-padding: 10px 22px;
-border-radius: 10px;
-font-family: ‘DM Sans’, sans-serif;
-font-size: 13px;
-font-weight: 500;
-cursor: pointer;
-border: none;
-transition: all 0.2s;
-}
-
-.btn-primary {
-background: var(–terracotta);
-color: white;
-}
-
-.btn-primary:hover {
-background: var(–brown);
-transform: translateY(-1px);
-box-shadow: 0 4px 14px rgba(196,98,58,0.3);
-}
-
-.btn-outline {
-background: transparent;
-color: var(–brown);
-border: 1.5px solid var(–border);
-}
-
-.btn-outline:hover { border-color: var(–brown); }
-
-/* Settings bar */
-.settings-bar {
-background: white;
-border: 1.5px solid var(–border);
-border-radius: 14px;
-padding: 14px 20px;
-display: flex;
-align-items: center;
-gap: 12px;
-margin-bottom: 28px;
-flex-wrap: wrap;
-}
-
-.settings-label {
-font-size: 12px;
-font-weight: 500;
-color: var(–muted);
-text-transform: uppercase;
-letter-spacing: 0.1em;
-white-space: nowrap;
-}
-
-.wa-icon {
-font-size: 18px;
-flex-shrink: 0;
-}
-
-.phone-input {
-flex: 1;
-min-width: 180px;
-padding: 8px 12px;
-border: 1.5px solid var(–border);
-border-radius: 8px;
-font-family: ‘DM Sans’, sans-serif;
-font-size: 14px;
-color: var(–ink);
-outline: none;
-transition: border-color 0.2s;
-}
-
-.phone-input:focus { border-color: #147EFB; }
-.phone-input::placeholder { color: var(–border); }
-
-.phone-hint {
+margin-bottom: 12px;
 font-size: 11px;
 color: var(–muted);
-font-weight: 300;
+text-transform: uppercase;
+letter-spacing: 0.08em;
 }
+.sep::before, .sep::after { content: ‘’; flex: 1; height: 1px; background: var(–border); }
 
-/* iMessage notify button inside modal */
 .wa-btn {
 width: 100%;
-padding: 13px;
-background: #147EFB;
+padding: 14px;
+background: var(–wa);
 color: white;
 border: none;
 border-radius: 12px;
@@ -555,76 +415,52 @@ font-family: ‘DM Sans’, sans-serif;
 font-size: 15px;
 font-weight: 500;
 cursor: pointer;
-transition: all 0.2s;
 display: flex;
 align-items: center;
 justify-content: center;
 gap: 8px;
 text-decoration: none;
+-webkit-appearance: none;
 }
 
-.wa-btn:hover { background: #0062d1; transform: translateY(-1px); }
-.wa-btn.disabled { background: var(–border); pointer-events: none; cursor: default; transform: none; }
-
-.modal-divider {
-display: flex;
-align-items: center;
-gap: 10px;
-color: var(–muted);
-font-size: 11px;
-letter-spacing: 0.08em;
-text-transform: uppercase;
-}
-
-.modal-divider::before, .modal-divider::after {
-content: ‘’;
-flex: 1;
-height: 1px;
-background: var(–border);
-}
+.wa-btn.off { background: var(–border); pointer-events: none; }
 
 /* Toast */
 .toast {
 position: fixed;
-bottom: 30px;
+bottom: 24px;
 left: 50%;
-transform: translateX(-50%) translateY(80px);
+transform: translateX(-50%) translateY(60px);
 background: var(–ink);
 color: white;
-padding: 12px 24px;
+padding: 11px 22px;
 border-radius: 30px;
 font-size: 13px;
 font-weight: 500;
 z-index: 200;
-transition: transform 0.3s ease;
+transition: transform 0.25s ease;
 pointer-events: none;
+white-space: nowrap;
 }
 
 .toast.show { transform: translateX(-50%) translateY(0); }
-
-/* Scrollbar */
-.meals-list::-webkit-scrollbar { width: 4px; }
-.meals-list::-webkit-scrollbar-track { background: transparent; }
-.meals-list::-webkit-scrollbar-thumb { background: var(–border); border-radius: 2px; }
 </style>
 
 </head>
 <body>
-
 <div class="container">
+
   <header>
     <div class="header-tag">✦ Weekly Planner</div>
     <h1>Plan Your Week,<br><em>One Meal at a Time</em></h1>
-    <p>Click any slot to choose a meal and build your perfect week of eating.</p>
+    <p>Tap any slot to add a meal for the day.</p>
   </header>
 
-  <div class="divider"><span class="divider-icon">❧</span></div>
+  <div class="divider"><span>✦</span></div>
 
-  <div class="settings-bar">
-    <span class="wa-icon">💬</span>
-    <span class="settings-label">Notify via iMessage</span>
-    <input class="phone-input" type="tel" id="waPhone" placeholder="+1 234 567 8900" />
-    <span class="phone-hint">Enter the family member's number to notify when a meal is added</span>
+  <div class="notify-bar">
+    <div class="notify-label">💬 WhatsApp notification number</div>
+    <input class="phone-input" type="tel" id="waPhone" placeholder="+1 234 567 8900">
   </div>
 
   <div class="meal-tabs" id="mealTabs">
@@ -636,102 +472,110 @@ pointer-events: none;
 
   <div class="week-grid" id="weekGrid"></div>
 
-  <div class="summary-bar">
-    <div class="summary-stats">
-      <div class="stat"><div class="stat-num" id="totalMeals">0</div><div class="stat-label">Meals Planned</div></div>
-      <div class="stat"><div class="stat-num" id="daysComplete">0</div><div class="stat-label">Days Complete</div></div>
-      <div class="stat"><div class="stat-num" id="vegCount">0</div><div class="stat-label">Empty Slots</div></div>
+  <div class="stats-bar">
+    <div class="stats">
+      <div>
+        <div class="stat-num" id="totalMeals">0</div>
+        <div class="stat-label">Planned</div>
+      </div>
+      <div>
+        <div class="stat-num" id="daysCount">0</div>
+        <div class="stat-label">Days</div>
+      </div>
+      <div>
+        <div class="stat-num" id="emptyCount">28</div>
+        <div class="stat-label">Empty</div>
+      </div>
     </div>
     <div class="action-btns">
-      <button class="btn btn-outline" onclick="clearAll()">Clear All</button>
-      <button class="btn btn-primary" onclick="printMenu()">🖨 Print Menu</button>
+      <button class="btn btn-outline" onclick="clearAll()">Clear</button>
+      <button class="btn btn-primary" onclick="window.print()">Print</button>
     </div>
   </div>
+
 </div>
 
 <!-- Modal -->
 
-<div class="modal-overlay" id="modalOverlay" onclick="closeModalOnOverlay(event)">
-  <div class="modal">
-    <div class="modal-header">
-      <div>
-        <h2 id="modalTitle">Choose a Meal</h2>
-        <p id="modalSubtitle">Select from the options below</p>
-      </div>
-      <button class="close-btn" onclick="closeModal()">✕</button>
-    </div>
-    <div class="modal-body">
-      <input class="meal-input" type="text" id="mealInput" placeholder="e.g. Spaghetti Bolognese…" maxlength="80" oninput="onMealInput()" onkeydown="onMealKeydown(event)">
-      <p class="meal-input-hint">Type any meal name and press Add — or hit Enter</p>
-      <button class="confirm-btn" id="confirmBtn" onclick="confirmMeal()" disabled>Add to menu</button>
-      <div class="modal-divider">then notify</div>
-      <button class="wa-btn disabled" id="waBtn" onclick="sendIMessage()">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.477 2 2 6.145 2 11.243c0 2.682 1.184 5.088 3.07 6.802L4 22l4.233-1.47A10.76 10.76 0 0012 21.486c5.523 0 10-4.144 10-9.243S17.523 2 12 2zm1.007 12.93l-2.567-2.718-4.992 2.718 5.498-5.834 2.633 2.718 4.927-2.718-5.499 5.834z"/></svg>
-        Send iMessage
-      </button>
-    </div>
+<div class="overlay" id="overlay" onclick="onOverlayClick(event)">
+  <div class="modal" id="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="modalTitle">Breakfast — Mon</div>
+    <div class="modal-subtitle" id="modalSub">What's for breakfast?</div>
+    <input class="meal-input" id="mealInput" type="text" placeholder="e.g. Avocado toast…" maxlength="80"
+      oninput="onInput()" onkeydown="if(event.key==='Enter')addMeal()">
+    <div class="input-hint">Type a meal name and tap Add</div>
+    <button class="add-btn" id="addBtn" onclick="addMeal()" disabled>Add to menu</button>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-  const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-  const MEAL_TYPES = ['Breakfast', 'Lunch', 'Dinner', 'Snack'];
+  const DAYS  = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const TYPES = ['Breakfast','Lunch','Dinner','Snack'];
 
-  // State
   const schedule = JSON.parse(localStorage.getItem('menuSchedule') || '{}');
-  let currentSlot = null;
-  let activeMealType = 'Breakfast';
+  let activeType   = 'Breakfast';
+  let currentSlot  = null;
 
-  function saveSchedule() {
-    localStorage.setItem('menuSchedule', JSON.stringify(schedule));
-  }
+  // Restore phone
+  const ph = document.getElementById('waPhone');
+  ph.value = localStorage.getItem('menuPhone') || '';
+  ph.addEventListener('input', () => {
+    localStorage.setItem('menuPhone', ph.value);
+  });
 
-  function init() {
-    const today = new Date().getDay();
+  // Tabs
+  document.getElementById('mealTabs').addEventListener('click', e => {
+    const btn = e.target.closest('.meal-tab');
+    if (!btn) return;
+    document.querySelectorAll('.meal-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeType = btn.dataset.meal;
+    renderGrid();
+  });
+
+  function renderGrid() {
+    const today    = new Date().getDay();
     const todayIdx = today === 0 ? 6 : today - 1;
-    const grid = document.getElementById('weekGrid');
+    const grid     = document.getElementById('weekGrid');
     grid.innerHTML = '';
 
     DAYS.forEach((day, i) => {
       const col = document.createElement('div');
-      col.className = 'day-column';
+      col.className = 'day-col';
 
-      const date = new Date();
-      const diff = i - (today === 0 ? 6 : today - 1);
-      date.setDate(date.getDate() + diff);
+      const d = new Date();
+      d.setDate(d.getDate() + (i - todayIdx));
 
-      const header = document.createElement('div');
-      header.className = 'day-header' + (i === todayIdx ? ' today' : '');
-      header.innerHTML = `<div class="day-name">${day}</div><div class="day-date">${date.getDate()}</div>`;
-      col.appendChild(header);
+      const hdr = document.createElement('div');
+      hdr.className = 'day-header' + (i === todayIdx ? ' today' : '');
+      hdr.innerHTML = `<div class="day-name">${day}</div><div class="day-date">${d.getDate()}</div>`;
+      col.appendChild(hdr);
 
-      const type = activeMealType;
-      const slot = document.createElement('div');
-      const key = `${day}-${type}`;
+      const key  = `${day}-${activeType}`;
       const meal = schedule[key];
-
+      const slot = document.createElement('div');
       slot.className = 'meal-slot' + (meal ? ' filled' : '');
 
       if (meal) {
         slot.innerHTML = `
-          <button class="remove-btn" onclick="removeMeal('${key}', event)" title="Remove">✕</button>
-          <div class="slot-label">${type}</div>
-          <div class="meal-name">${meal.name}</div>
-        `;
+          <button class="slot-remove" onclick="removeMeal(event,'${key}')">✕</button>
+          <div class="slot-type">${activeType}</div>
+          <div class="slot-meal-name">${meal.name}</div>`;
       } else {
         slot.innerHTML = `
-          <div class="slot-label">${type}</div>
-          <div class="slot-empty-icon">+</div>
-          <div class="slot-empty-text">Add meal</div>
-        `;
+          <div class="slot-type">${activeType}</div>
+          <div class="slot-plus">+</div>
+          <div class="slot-add-text">Add</div>`;
       }
 
-      slot.onclick = (e) => {
-        if (e.target.classList.contains('remove-btn')) return;
-        openModal(day, type);
-      };
+      slot.addEventListener('click', e => {
+        if (e.target.classList.contains('slot-remove')) return;
+        openModal(day, activeType);
+      });
+
       col.appendChild(slot);
       grid.appendChild(col);
     });
@@ -743,117 +587,81 @@ pointer-events: none;
     currentSlot = { day, type };
     const existing = schedule[`${day}-${type}`];
     document.getElementById('modalTitle').textContent = `${type} — ${day}`;
-    document.getElementById('modalSubtitle').textContent = existing ? 'Update or replace this meal' : `What's for ${type.toLowerCase()}?`;
-    const input = document.getElementById('mealInput');
-    input.value = existing ? existing.name : '';
-    document.getElementById('confirmBtn').disabled = !input.value.trim();
-    updateWaBtn(input.value.trim());
-    document.getElementById('modalOverlay').classList.add('open');
-    setTimeout(() => input.focus(), 80);
+    document.getElementById('modalSub').textContent   = existing ? 'Edit or replace this meal' : `What's for ${type.toLowerCase()}?`;
+    const inp = document.getElementById('mealInput');
+    inp.value = existing ? existing.name : '';
+    document.getElementById('addBtn').disabled = !inp.value.trim();
+    document.getElementById('overlay').classList.add('open');
+    setTimeout(() => inp.focus(), 120);
   }
 
   function closeModal() {
-    document.getElementById('modalOverlay').classList.remove('open');
+    document.getElementById('overlay').classList.remove('open');
     currentSlot = null;
   }
 
-  function closeModalOnOverlay(e) {
-    if (e.target === document.getElementById('modalOverlay')) closeModal();
+  function onOverlayClick(e) {
+    if (e.target === document.getElementById('overlay')) closeModal();
   }
 
-  function onMealInput() {
+  function onInput() {
     const val = document.getElementById('mealInput').value.trim();
-    document.getElementById('confirmBtn').disabled = !val;
-    updateWaBtn(val);
+    document.getElementById('addBtn').disabled = !val;
   }
 
-  function updateWaBtn(mealVal) {
-    const phone = document.getElementById('waPhone').value.trim().replace(/[\s\-\(\)]/g, '');
-    const waBtn = document.getElementById('waBtn');
-    if (mealVal && phone && currentSlot) {
-      waBtn.classList.remove('disabled');
-    } else {
-      waBtn.classList.add('disabled');
-    }
-  }
-
-  function sendIMessage() {
-    const phone = document.getElementById('waPhone').value.trim().replace(/[\s\-\(\)]/g, '');
-    const mealVal = document.getElementById('mealInput').value.trim();
-    if (!mealVal || !phone || !currentSlot) return;
-    const { day, type } = currentSlot;
-    const msg = encodeURIComponent(`🍽️ Meal update!\n\n${type} on ${day} has been set to:\n👉 ${mealVal}\n\nCheck the weekly menu for more details.`);
-    window.location.href = `sms:${phone}&body=${msg}`;
-  }
-
-  function onMealKeydown(e) {
-    if (e.key === 'Enter') confirmMeal();
-  }
-
-  function confirmMeal() {
+  function addMeal() {
     const val = document.getElementById('mealInput').value.trim();
     if (!val || !currentSlot) return;
     const { day, type } = currentSlot;
     schedule[`${day}-${type}`] = { name: val };
-    saveSchedule();
+    localStorage.setItem('menuSchedule', JSON.stringify(schedule));
+
+    // Auto-send WhatsApp if phone is set
+    const phone = ph.value.trim().replace(/[\s\-\(\)]/g, '');
+    if (phone) {
+      const msg = encodeURIComponent(`🍽️ Meal update!\n\n*${type}* on *${day}*:\n👉 ${val}\n\nCheck the weekly menu!`);
+      window.open(`https://wa.me/${phone}?text=${msg}`, '_blank');
+    }
+
     closeModal();
-    init();
-    showToast(`"${val}" added to ${day} ${type.toLowerCase()}`);
+    renderGrid();
+    showToast(`Added: ${val}`);
   }
 
-  function removeMeal(key, e) {
+  function removeMeal(e, key) {
     e.stopPropagation();
     delete schedule[key];
-    saveSchedule();
-    init();
+    localStorage.setItem('menuSchedule', JSON.stringify(schedule));
+    renderGrid();
     showToast('Meal removed');
   }
 
   function clearAll() {
     if (!Object.keys(schedule).length) return;
     Object.keys(schedule).forEach(k => delete schedule[k]);
-    saveSchedule();
-    init();
+    localStorage.setItem('menuSchedule', JSON.stringify(schedule));
+    renderGrid();
     showToast('Menu cleared');
   }
 
   function updateStats() {
     const total = Object.keys(schedule).length;
-    const daysWithMeal = DAYS.filter(d => MEAL_TYPES.some(t => schedule[`${d}-${t}`])).length;
-    const emptySlots = (DAYS.length * MEAL_TYPES.length) - total;
+    const days  = DAYS.filter(d => TYPES.some(t => schedule[`${d}-${t}`])).length;
     document.getElementById('totalMeals').textContent = total;
-    document.getElementById('daysComplete').textContent = daysWithMeal;
-    document.getElementById('vegCount').textContent = emptySlots;
+    document.getElementById('daysCount').textContent  = days;
+    document.getElementById('emptyCount').textContent = (DAYS.length * TYPES.length) - total;
   }
 
   function showToast(msg) {
     const t = document.getElementById('toast');
     t.textContent = msg;
     t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2500);
+    setTimeout(() => t.classList.remove('show'), 2200);
   }
-
-  function printMenu() { window.print(); }
-
-  document.getElementById('mealTabs').addEventListener('click', e => {
-    const btn = e.target.closest('.meal-tab');
-    if (!btn) return;
-    document.querySelectorAll('.meal-tab').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    activeMealType = btn.dataset.meal;
-    init();
-  });
-
-  // Persist phone number
-  const savedPhone = localStorage.getItem('menuPhone');
-  if (savedPhone) document.getElementById('waPhone').value = savedPhone;
-  document.getElementById('waPhone').addEventListener('input', () => {
-    localStorage.setItem('menuPhone', document.getElementById('waPhone').value);
-  });
 
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-  init();
+  renderGrid();
 </script>
 
 </body>
