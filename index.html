@@ -7,103 +7,75 @@
 <title>Weekly Menu Planner</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --cream: #F9F4EC;
-    --ink: #1A1410;
-    --brown: #5C3D2E;
-    --terracotta: #C4623A;
-    --gold: #D4A853;
-    --muted: #9B8B7A;
-    --white: #FFFFFF;
-    --border: #E8DDD0;
-    --wa: #25D366;
-  }
-
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  * { margin:0; padding:0; box-sizing:border-box; }
 
 html, body {
-background: var(–cream);
+background: #F9F4EC;
 font-family: ‘DM Sans’, sans-serif;
-color: var(–ink);
+color: #1A1410;
 min-height: 100vh;
 -webkit-text-size-adjust: 100%;
 }
 
-.container {
-max-width: 900px;
-margin: 0 auto;
-padding: 0 16px 80px;
-}
+.container { max-width: 900px; margin: 0 auto; padding: 0 16px 80px; }
 
 /* Header */
-header {
-text-align: center;
-padding: 40px 0 24px;
-}
+header { text-align: center; padding: 36px 0 20px; }
 
 .header-tag {
 display: inline-block;
 font-size: 11px;
 letter-spacing: 0.18em;
 text-transform: uppercase;
-color: var(–terracotta);
+color: #C4623A;
 font-weight: 500;
-border: 1px solid var(–terracotta);
+border: 1px solid #C4623A;
 padding: 4px 14px;
 border-radius: 20px;
-margin-bottom: 14px;
+margin-bottom: 12px;
 }
 
 h1 {
 font-family: ‘Playfair Display’, serif;
-font-size: clamp(1.9rem, 7vw, 3rem);
+font-size: clamp(1.8rem, 7vw, 2.8rem);
 font-weight: 700;
-color: var(–brown);
+color: #5C3D2E;
 line-height: 1.2;
-margin-bottom: 10px;
+margin-bottom: 8px;
 }
 
-h1 em { font-style: italic; color: var(–terracotta); }
+h1 em { font-style: italic; color: #C4623A; }
 
-header p {
-font-size: 14px;
-color: var(–muted);
-font-weight: 300;
-}
+header p { font-size: 14px; color: #9B8B7A; font-weight: 300; }
 
 /* Divider */
 .divider {
 display: flex;
 align-items: center;
 gap: 12px;
-margin: 20px 0;
-width: 100%;
+margin: 18px 0;
 }
 .divider::before, .divider::after {
 content: ‘’;
 flex: 1;
 height: 1px;
-background: var(–border);
+background: #E8DDD0;
 }
-.divider span {
-font-size: 14px;
-color: var(–gold);
-line-height: 1;
-}
+.divider-star { font-size: 14px; color: #D4A853; }
 
 /* Notify bar */
 .notify-bar {
-background: var(–white);
-border: 1.5px solid var(–border);
+background: #FFFFFF;
+border: 1.5px solid #E8DDD0;
 border-radius: 14px;
 padding: 14px 16px;
-margin-bottom: 20px;
+margin-bottom: 16px;
 }
 
 .notify-label {
 font-size: 11px;
 font-weight: 500;
-color: var(–muted);
+color: #9B8B7A;
 text-transform: uppercase;
 letter-spacing: 0.1em;
 margin-bottom: 8px;
@@ -112,45 +84,39 @@ margin-bottom: 8px;
 .phone-input {
 width: 100%;
 padding: 10px 14px;
-border: 1.5px solid var(–border);
+border: 1.5px solid #E8DDD0;
 border-radius: 10px;
 font-family: ‘DM Sans’, sans-serif;
 font-size: 15px;
-color: var(–ink);
-background: var(–cream);
+color: #1A1410;
+background: #F9F4EC;
 outline: none;
 -webkit-appearance: none;
+appearance: none;
 }
 
-.phone-input:focus { border-color: var(–wa); }
-
-/* Tabs */
+/* Tabs — using divs not buttons */
 .meal-tabs {
 display: grid;
 grid-template-columns: repeat(4, 1fr);
 gap: 8px;
-margin-bottom: 20px;
+margin-bottom: 16px;
 }
 
 .meal-tab {
 padding: 10px 4px;
 border-radius: 12px;
-border: 1.5px solid var(–border);
-background-color: var(–white);
+border: 1.5px solid #E8DDD0;
+background: #FFFFFF;
 font-family: ‘DM Sans’, sans-serif;
 font-size: 12px;
 font-weight: 500;
-color: var(–muted);
+color: #9B8B7A;
 cursor: pointer;
 text-align: center;
--webkit-appearance: none;
-appearance: none;
-}
-
-.meal-tab.active {
-background-color: var(–brown) !important;
-border-color: var(–brown) !important;
-color: white !important;
+user-select: none;
+-webkit-user-select: none;
+transition: none;
 }
 
 /* Week grid */
@@ -158,7 +124,7 @@ color: white !important;
 display: grid;
 grid-template-columns: repeat(7, 1fr);
 gap: 8px;
-margin-bottom: 24px;
+margin-bottom: 20px;
 }
 
 @media (max-width: 600px) {
@@ -170,20 +136,18 @@ margin-bottom: 24px;
 
 .day-col { display: flex; flex-direction: column; gap: 6px; }
 
+/* Day header — background set inline in JS */
 .day-header {
-background-color: var(–brown);
 border-radius: 10px;
 padding: 8px 4px;
 text-align: center;
 }
 
-.day-header.today { background-color: var(–terracotta) !important; }
-
 .day-name {
 font-size: 10px;
 letter-spacing: 0.08em;
 text-transform: uppercase;
-color: rgba(255,255,255,0.75);
+color: rgba(255,255,255,0.8);
 font-weight: 500;
 display: block;
 }
@@ -197,9 +161,10 @@ line-height: 1.2;
 display: block;
 }
 
+/* Meal slot */
 .meal-slot {
-background: var(–white);
-border: 1.5px dashed var(–border);
+background: #FFFFFF;
+border: 1.5px dashed #E8DDD0;
 border-radius: 10px;
 min-height: 80px;
 padding: 8px;
@@ -224,47 +189,42 @@ justify-content: flex-start;
 font-size: 9px;
 text-transform: uppercase;
 letter-spacing: 0.1em;
-color: var(–muted);
+color: #9B8B7A;
 font-weight: 500;
 margin-bottom: 3px;
+display: block;
 }
 
-.slot-plus {
-font-size: 22px;
-color: var(–border);
-line-height: 1;
-margin-bottom: 2px;
-}
-
-.slot-add-text { font-size: 10px; color: var(–muted); }
+.slot-plus { font-size: 22px; color: #E8DDD0; line-height: 1; margin-bottom: 2px; display: block; }
+.slot-add-text { font-size: 10px; color: #9B8B7A; display: block; }
 
 .slot-meal-name {
 font-family: ‘Playfair Display’, serif;
 font-size: 12px;
 font-weight: 700;
-color: var(–brown);
+color: #5C3D2E;
 line-height: 1.3;
 word-break: break-word;
+display: block;
 }
 
 .slot-remove {
 position: absolute;
-top: 4px;
-right: 4px;
+top: 4px; right: 4px;
 background: none;
 border: none;
-color: var(–muted);
-font-size: 12px;
+color: #9B8B7A;
+font-size: 13px;
 cursor: pointer;
-padding: 2px 4px;
+padding: 4px 6px;
 line-height: 1;
 -webkit-appearance: none;
 }
 
-/* Stats */
+/* Stats bar */
 .stats-bar {
-background: var(–white);
-border: 1.5px solid var(–border);
+background: #FFFFFF;
+border: 1.5px solid #E8DDD0;
 border-radius: 14px;
 padding: 16px;
 display: flex;
@@ -280,7 +240,7 @@ flex-wrap: wrap;
 font-family: ‘Playfair Display’, serif;
 font-size: 26px;
 font-weight: 700;
-color: var(–terracotta);
+color: #C4623A;
 line-height: 1;
 }
 
@@ -288,7 +248,7 @@ line-height: 1;
 font-size: 10px;
 text-transform: uppercase;
 letter-spacing: 0.08em;
-color: var(–muted);
+color: #9B8B7A;
 font-weight: 500;
 margin-top: 2px;
 }
@@ -302,14 +262,23 @@ font-family: ‘DM Sans’, sans-serif;
 font-size: 13px;
 font-weight: 500;
 cursor: pointer;
-border: none;
 -webkit-appearance: none;
+appearance: none;
 }
 
-.btn-outline { background: transparent; color: var(–brown); border: 1.5px solid var(–border); }
-.btn-primary { background: var(–terracotta); color: white; }
+.btn-clear {
+background: transparent;
+color: #5C3D2E;
+border: 1.5px solid #E8DDD0;
+}
 
-/* Modal — slides up from bottom on mobile */
+.btn-print {
+background: #C4623A;
+color: #FFFFFF;
+border: none;
+}
+
+/* Overlay + modal */
 .overlay {
 display: none;
 position: fixed;
@@ -323,23 +292,22 @@ justify-content: center;
 .overlay.open { display: flex; }
 
 .modal {
-background: var(–cream);
+background: #F9F4EC;
 border-radius: 24px 24px 0 0;
 width: 100%;
 max-width: 540px;
-padding: 16px 20px 44px;
+padding: 16px 20px 48px;
 animation: slideUp 0.22s ease;
 }
 
 @keyframes slideUp {
 from { transform: translateY(100%); opacity: 0; }
-to { transform: translateY(0); opacity: 1; }
+to   { transform: translateY(0);    opacity: 1; }
 }
 
 .modal-handle {
-width: 36px;
-height: 4px;
-background: var(–border);
+width: 36px; height: 4px;
+background: #E8DDD0;
 border-radius: 2px;
 margin: 0 auto 18px;
 }
@@ -348,95 +316,58 @@ margin: 0 auto 18px;
 font-family: ‘Playfair Display’, serif;
 font-size: 20px;
 font-weight: 700;
-color: var(–brown);
+color: #5C3D2E;
 margin-bottom: 4px;
 }
 
-.modal-subtitle {
-font-size: 13px;
-color: var(–muted);
-margin-bottom: 18px;
-}
+.modal-sub { font-size: 13px; color: #9B8B7A; margin-bottom: 18px; }
 
 .meal-input {
 width: 100%;
 padding: 14px 16px;
-border: 1.5px solid var(–border);
+border: 1.5px solid #E8DDD0;
 border-radius: 12px;
-background: var(–white);
+background: #FFFFFF;
 font-family: ‘Playfair Display’, serif;
 font-size: 17px;
-color: var(–ink);
+color: #1A1410;
 outline: none;
 margin-bottom: 6px;
 -webkit-appearance: none;
+appearance: none;
 display: block;
 }
 
-.meal-input:focus { border-color: var(–terracotta); }
+.meal-input:focus { border-color: #C4623A; }
 .meal-input::placeholder { color: #CCC; font-style: italic; }
 
-.input-hint { font-size: 12px; color: var(–muted); margin-bottom: 14px; }
+.input-hint { font-size: 12px; color: #9B8B7A; margin-bottom: 14px; }
 
 .add-btn {
 width: 100%;
-padding: 14px;
-background: var(–terracotta);
-color: white;
+padding: 15px;
+background: #C4623A;
+color: #FFFFFF;
 border: none;
 border-radius: 12px;
 font-family: ‘DM Sans’, sans-serif;
 font-size: 15px;
 font-weight: 500;
 cursor: pointer;
-margin-bottom: 12px;
 -webkit-appearance: none;
+appearance: none;
 display: block;
 }
 
-.add-btn:disabled { background: var(–border); }
-
-.sep {
-display: flex;
-align-items: center;
-gap: 10px;
-margin-bottom: 12px;
-font-size: 11px;
-color: var(–muted);
-text-transform: uppercase;
-letter-spacing: 0.08em;
-}
-.sep::before, .sep::after { content: ‘’; flex: 1; height: 1px; background: var(–border); }
-
-.wa-btn {
-width: 100%;
-padding: 14px;
-background: var(–wa);
-color: white;
-border: none;
-border-radius: 12px;
-font-family: ‘DM Sans’, sans-serif;
-font-size: 15px;
-font-weight: 500;
-cursor: pointer;
-display: flex;
-align-items: center;
-justify-content: center;
-gap: 8px;
-text-decoration: none;
--webkit-appearance: none;
-}
-
-.wa-btn.off { background: var(–border); pointer-events: none; }
+.add-btn:disabled { background: #E8DDD0; color: #9B8B7A; }
 
 /* Toast */
 .toast {
 position: fixed;
-bottom: 24px;
-left: 50%;
+bottom: 24px; left: 50%;
 transform: translateX(-50%) translateY(60px);
-background: var(–ink);
-color: white;
+background: #1A1410;
+color: #FFFFFF;
 padding: 11px 22px;
 border-radius: 30px;
 font-size: 13px;
@@ -460,7 +391,7 @@ white-space: nowrap;
     <p>Tap any slot to add a meal for the day.</p>
   </header>
 
-  <div class="divider"><span>✦</span></div>
+  <div class="divider"><span class="divider-star">✦</span></div>
 
   <div class="notify-bar">
     <div class="notify-label">💬 WhatsApp notification number</div>
@@ -468,10 +399,10 @@ white-space: nowrap;
   </div>
 
   <div class="meal-tabs" id="mealTabs">
-    <button class="meal-tab active" data-meal="Breakfast">🌅 Breakfast</button>
-    <button class="meal-tab" data-meal="Lunch">☀️ Lunch</button>
-    <button class="meal-tab" data-meal="Dinner">🌙 Dinner</button>
-    <button class="meal-tab" data-meal="Snack">🍎 Snack</button>
+    <div class="meal-tab" data-meal="Breakfast">🌅 Breakfast</div>
+    <div class="meal-tab" data-meal="Lunch">☀️ Lunch</div>
+    <div class="meal-tab" data-meal="Dinner">🌙 Dinner</div>
+    <div class="meal-tab" data-meal="Snack">🍎 Snack</div>
   </div>
 
   <div class="week-grid" id="weekGrid"></div>
@@ -492,8 +423,8 @@ white-space: nowrap;
       </div>
     </div>
     <div class="action-btns">
-      <button class="btn btn-outline" onclick="clearAll()">Clear</button>
-      <button class="btn btn-primary" onclick="window.print()">Print</button>
+      <button class="btn btn-clear" onclick="clearAll()">Clear</button>
+      <button class="btn btn-print" onclick="window.print()">Print</button>
     </div>
   </div>
 
@@ -505,8 +436,9 @@ white-space: nowrap;
   <div class="modal" id="modal">
     <div class="modal-handle"></div>
     <div class="modal-title" id="modalTitle">Breakfast — Mon</div>
-    <div class="modal-subtitle" id="modalSub">What's for breakfast?</div>
-    <input class="meal-input" id="mealInput" type="text" placeholder="e.g. Avocado toast…" maxlength="80"
+    <div class="modal-sub" id="modalSub">What's for breakfast?</div>
+    <input class="meal-input" id="mealInput" type="text"
+      placeholder="e.g. Avocado toast…" maxlength="80"
       oninput="onInput()" onkeydown="if(event.key==='Enter')addMeal()">
     <div class="input-hint">Type a meal name and tap Add</div>
     <button class="add-btn" id="addBtn" onclick="addMeal()" disabled>Add to menu</button>
@@ -518,27 +450,38 @@ white-space: nowrap;
 <script>
   const DAYS  = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
   const TYPES = ['Breakfast','Lunch','Dinner','Snack'];
+  const BROWN      = '#5C3D2E';
+  const TERRACOTTA = '#C4623A';
 
   const schedule = JSON.parse(localStorage.getItem('menuSchedule') || '{}');
-  let activeType   = 'Breakfast';
-  let currentSlot  = null;
+  let activeType  = 'Breakfast';
+  let currentSlot = null;
 
   // Restore phone
   const ph = document.getElementById('waPhone');
   ph.value = localStorage.getItem('menuPhone') || '';
-  ph.addEventListener('input', () => {
-    localStorage.setItem('menuPhone', ph.value);
-  });
+  ph.addEventListener('input', () => localStorage.setItem('menuPhone', ph.value));
 
-  // Tabs
+  // Set first tab active on load
+  setActiveTab('Breakfast');
+
+  // Tabs — divs with click
   document.getElementById('mealTabs').addEventListener('click', e => {
-    const btn = e.target.closest('.meal-tab');
-    if (!btn) return;
-    document.querySelectorAll('.meal-tab').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    activeType = btn.dataset.meal;
+    const tab = e.target.closest('.meal-tab');
+    if (!tab) return;
+    setActiveTab(tab.dataset.meal);
+    activeType = tab.dataset.meal;
     renderGrid();
   });
+
+  function setActiveTab(meal) {
+    document.querySelectorAll('.meal-tab').forEach(t => {
+      const isActive = t.dataset.meal === meal;
+      t.style.background    = isActive ? BROWN : '#FFFFFF';
+      t.style.borderColor   = isActive ? BROWN : '#E8DDD0';
+      t.style.color         = isActive ? '#FFFFFF' : '#9B8B7A';
+    });
+  }
 
   function renderGrid() {
     const today    = new Date().getDay();
@@ -553,11 +496,14 @@ white-space: nowrap;
       const d = new Date();
       d.setDate(d.getDate() + (i - todayIdx));
 
+      // Day header — background set inline
       const hdr = document.createElement('div');
-      hdr.className = 'day-header' + (i === todayIdx ? ' today' : '');
-      hdr.innerHTML = `<div class="day-name">${day}</div><div class="day-date">${d.getDate()}</div>`;
+      hdr.className = 'day-header';
+      hdr.style.background = (i === todayIdx) ? TERRACOTTA : BROWN;
+      hdr.innerHTML = `<span class="day-name">${day}</span><span class="day-date">${d.getDate()}</span>`;
       col.appendChild(hdr);
 
+      // Meal slot
       const key  = `${day}-${activeType}`;
       const meal = schedule[key];
       const slot = document.createElement('div');
@@ -566,13 +512,13 @@ white-space: nowrap;
       if (meal) {
         slot.innerHTML = `
           <button class="slot-remove" onclick="removeMeal(event,'${key}')">✕</button>
-          <div class="slot-type">${activeType}</div>
-          <div class="slot-meal-name">${meal.name}</div>`;
+          <span class="slot-type">${activeType}</span>
+          <span class="slot-meal-name">${meal.name}</span>`;
       } else {
         slot.innerHTML = `
-          <div class="slot-type">${activeType}</div>
-          <div class="slot-plus">+</div>
-          <div class="slot-add-text">Add</div>`;
+          <span class="slot-type">${activeType}</span>
+          <span class="slot-plus">+</span>
+          <span class="slot-add-text">Add</span>`;
       }
 
       slot.addEventListener('click', e => {
@@ -609,8 +555,7 @@ white-space: nowrap;
   }
 
   function onInput() {
-    const val = document.getElementById('mealInput').value.trim();
-    document.getElementById('addBtn').disabled = !val;
+    document.getElementById('addBtn').disabled = !document.getElementById('mealInput').value.trim();
   }
 
   function addMeal() {
@@ -620,11 +565,11 @@ white-space: nowrap;
     schedule[`${day}-${type}`] = { name: val };
     localStorage.setItem('menuSchedule', JSON.stringify(schedule));
 
-    // Auto-send WhatsApp if phone is set
+    // Auto WhatsApp
     const phone = ph.value.trim().replace(/[\s\-\(\)]/g, '');
     if (phone) {
       const appUrl = window.location.href;
-      const msg = encodeURIComponent(`🍽️ Meal update!\n\n*${type}* on *${day}*:\n👉 ${val}\n\n📅 View the full menu here:\n${appUrl}`);
+      const msg = encodeURIComponent(`🍽️ Meal update!\n\n*${type}* on *${day}*:\n👉 ${val}\n\n📅 View the full menu:\n${appUrl}`);
       window.open(`https://wa.me/${phone}?text=${msg}`, '_blank');
     }
 
